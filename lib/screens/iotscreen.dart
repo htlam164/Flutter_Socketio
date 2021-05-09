@@ -9,11 +9,678 @@ class IotScreen extends StatefulWidget {
   _IotScreenState createState() => _IotScreenState();
 }
 
-String realtime1 = "";
-String realtime2 = "";
-String realtime3 = "";
+int realtime1 = 0;
+int realtime2 = 0;
+int realtime3 = 0;
+int realtime4 = 0;
+int realtime5 = 0;
+int realtime6 = 0;
 // ignore: unused_element
 Timer _timer;
+
+class SixthPage extends StatelessWidget {
+  final dbRef = FirebaseDatabase.instance.reference();
+  @override
+  Widget build(BuildContext ctxt) {
+    return new Scaffold(
+        appBar: new AppBar(
+          title: new Text("Information - Station 6"),
+        ),
+        body: SafeArea(
+            child: StreamBuilder(
+                stream: Stream.periodic(const Duration(seconds: 1)),
+                builder: (context, snapshot) {
+                  return StreamBuilder(
+                      stream: dbRef.child("Tram6").onValue,
+                      builder: (context, snapshot) {
+                        if (snapshot.hasData &&
+                            !snapshot.hasError &&
+                            snapshot.data.snapshot.value != null &&
+                            snapshot.data.snapshot.value["RealTime"] !=
+                                realtime6) {
+                          _timer =
+                              new Timer(const Duration(milliseconds: 2000), () {
+                            realtime6 =
+                                snapshot.data.snapshot.value["RealTime"];
+                          });
+                          return Column(children: [
+                            SizedBox(height: 5),
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                                Row(
+                                  children: [
+                                    Padding(
+                                      padding: const EdgeInsets.all(4.0),
+                                      child: Text("Temperature",
+                                          style: TextStyle(
+                                              color: Colors.yellow,
+                                              fontSize: 20,
+                                              fontWeight: FontWeight.bold)),
+                                    ),
+                                    Padding(
+                                      padding: const EdgeInsets.all(4.0),
+                                      child: Text(
+                                          snapshot.data.snapshot
+                                                  .value["nhietdo"]
+                                                  .toString() +
+                                              "°C",
+                                          style: TextStyle(
+                                              color: Colors.white,
+                                              fontSize: 20)),
+                                    ),
+                                  ],
+                                ),
+                              ],
+                            ),
+                            SizedBox(height: 10),
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                                Row(
+                                  children: [
+                                    Padding(
+                                      padding: const EdgeInsets.all(4.0),
+                                      child: Text("Humidity",
+                                          style: TextStyle(
+                                              color: Colors.yellow,
+                                              fontSize: 20,
+                                              fontWeight: FontWeight.bold)),
+                                    ),
+                                    Padding(
+                                      padding: const EdgeInsets.all(4.0),
+                                      child: Text(
+                                          snapshot.data.snapshot.value["doam"]
+                                                  .toString() +
+                                              "%",
+                                          style: TextStyle(
+                                              color: Colors.white,
+                                              fontSize: 20)),
+                                    ),
+                                  ],
+                                ),
+                              ],
+                            ),
+                            SizedBox(height: 10),
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                                Row(
+                                  children: [
+                                    Padding(
+                                      padding: const EdgeInsets.all(4.0),
+                                      child: Text("cps",
+                                          style: TextStyle(
+                                              color: Colors.yellow,
+                                              fontSize: 20,
+                                              fontWeight: FontWeight.bold)),
+                                    ),
+                                    Padding(
+                                      padding: const EdgeInsets.all(4.0),
+                                      child: Text(
+                                          snapshot.data.snapshot.value["cps"]
+                                                  .toString() +
+                                              "",
+                                          style: TextStyle(
+                                              color: Colors.white,
+                                              fontSize: 20)),
+                                    ),
+                                  ],
+                                ),
+                              ],
+                            ),
+                            SizedBox(height: 10),
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                                Row(
+                                  children: [
+                                    Padding(
+                                      padding: const EdgeInsets.all(4.0),
+                                      child: Text("uSv",
+                                          style: TextStyle(
+                                              color: Colors.yellow,
+                                              fontSize: 20,
+                                              fontWeight: FontWeight.bold)),
+                                    ),
+                                    Padding(
+                                      padding: const EdgeInsets.all(4.0),
+                                      child: Text(
+                                          snapshot.data.snapshot.value["uSv"]
+                                                  .toString() +
+                                              "uSv/h",
+                                          style: TextStyle(
+                                              color: Colors.white,
+                                              fontSize: 20)),
+                                    ),
+                                  ],
+                                ),
+                              ],
+                            ),
+                            SizedBox(height: 10),
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                                Row(
+                                  children: [
+                                    Padding(
+                                      padding: const EdgeInsets.all(4.0),
+                                      child: Text("Total Counts",
+                                          style: TextStyle(
+                                              color: Colors.yellow,
+                                              fontSize: 20,
+                                              fontWeight: FontWeight.bold)),
+                                    ),
+                                    Padding(
+                                      padding: const EdgeInsets.all(4.0),
+                                      child: Text(
+                                          snapshot.data.snapshot
+                                                  .value["Totalcounts"]
+                                                  .toString() +
+                                              "",
+                                          style: TextStyle(
+                                              color: Colors.white,
+                                              fontSize: 20)),
+                                    ),
+                                  ],
+                                ),
+                              ],
+                            ),
+                            SizedBox(height: 200),
+                            Column(
+                              children: [
+                                
+                                Padding(
+                                  padding: const EdgeInsets.all(1),
+                                  child: Text(
+                                      DateFormat.yMEd()
+                                          .add_jms()
+                                          .format(DateTime.now()),
+                                      textAlign: TextAlign.center,
+                                      style: new TextStyle(
+                                          fontWeight: FontWeight.bold,
+                                          fontSize: 20,
+                                          color: Colors.white)),
+                                ),
+                              ],
+                            ),
+                          ]);
+                        } else {
+                          return Column(children: [
+                            SizedBox(height: 5),
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                                Row(
+                                  children: [
+                                    Padding(
+                                      padding: const EdgeInsets.all(4.0),
+                                      child: Text("Tram6",
+                                          style: TextStyle(
+                                              color: Colors.yellow,
+                                              fontSize: 20,
+                                              fontWeight: FontWeight.bold)),
+                                    ),
+                                    Padding(
+                                      padding: const EdgeInsets.all(4.0),
+                                      child: Text("DISCONNECTED",
+                                          style: TextStyle(
+                                              color: Colors.white,
+                                              fontSize: 20)),
+                                    ),
+                                  ],
+                                ),
+                              ],
+                            )
+                          ]);
+                        }
+                      });
+                })));
+  }
+}
+
+class ThursPage extends StatelessWidget {
+  final dbRef = FirebaseDatabase.instance.reference();
+  @override
+  Widget build(BuildContext ctxt) {
+    return new Scaffold(
+        appBar: new AppBar(
+          title: new Text("Information - Station 5"),
+        ),
+        body: SafeArea(
+            child: StreamBuilder(
+                stream: Stream.periodic(const Duration(seconds: 1)),
+                builder: (context, snapshot) {
+                  return StreamBuilder(
+                      stream: dbRef.child("Tram5").onValue,
+                      builder: (context, snapshot) {
+                        if (snapshot.hasData &&
+                            !snapshot.hasError &&
+                            snapshot.data.snapshot.value != null &&
+                            snapshot.data.snapshot.value["RealTime"] !=
+                                realtime5) {
+                          _timer =
+                              new Timer(const Duration(milliseconds:2000), () {
+                            realtime5 =
+                                snapshot.data.snapshot.value["RealTime"];
+                          });
+                          return Column(children: [
+                            SizedBox(height: 5),
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                                Row(
+                                  children: [
+                                    Padding(
+                                      padding: const EdgeInsets.all(4.0),
+                                      child: Text("Temperature",
+                                          style: TextStyle(
+                                              color: Colors.yellow,
+                                              fontSize: 20,
+                                              fontWeight: FontWeight.bold)),
+                                    ),
+                                    Padding(
+                                      padding: const EdgeInsets.all(4.0),
+                                      child: Text(
+                                          snapshot.data.snapshot
+                                                  .value["nhietdo"]
+                                                  .toString() +
+                                              "°C",
+                                          style: TextStyle(
+                                              color: Colors.white,
+                                              fontSize: 20)),
+                                    ),
+                                  ],
+                                ),
+                              ],
+                            ),
+                            SizedBox(height: 10),
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                                Row(
+                                  children: [
+                                    Padding(
+                                      padding: const EdgeInsets.all(4.0),
+                                      child: Text("Humidity",
+                                          style: TextStyle(
+                                              color: Colors.yellow,
+                                              fontSize: 20,
+                                              fontWeight: FontWeight.bold)),
+                                    ),
+                                    Padding(
+                                      padding: const EdgeInsets.all(4.0),
+                                      child: Text(
+                                          snapshot.data.snapshot.value["doam"]
+                                                  .toString() +
+                                              "%",
+                                          style: TextStyle(
+                                              color: Colors.white,
+                                              fontSize: 20)),
+                                    ),
+                                  ],
+                                ),
+                              ],
+                            ),
+                            SizedBox(height: 10),
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                                Row(
+                                  children: [
+                                    Padding(
+                                      padding: const EdgeInsets.all(4.0),
+                                      child: Text("cps",
+                                          style: TextStyle(
+                                              color: Colors.yellow,
+                                              fontSize: 20,
+                                              fontWeight: FontWeight.bold)),
+                                    ),
+                                    Padding(
+                                      padding: const EdgeInsets.all(4.0),
+                                      child: Text(
+                                          snapshot.data.snapshot.value["cps"]
+                                                  .toString() +
+                                              "",
+                                          style: TextStyle(
+                                              color: Colors.white,
+                                              fontSize: 20)),
+                                    ),
+                                  ],
+                                ),
+                              ],
+                            ),
+                            SizedBox(height: 10),
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                                Row(
+                                  children: [
+                                    Padding(
+                                      padding: const EdgeInsets.all(4.0),
+                                      child: Text("uSv",
+                                          style: TextStyle(
+                                              color: Colors.yellow,
+                                              fontSize: 20,
+                                              fontWeight: FontWeight.bold)),
+                                    ),
+                                    Padding(
+                                      padding: const EdgeInsets.all(4.0),
+                                      child: Text(
+                                          snapshot.data.snapshot.value["uSv"]
+                                                  .toString() +
+                                              "uSv/h",
+                                          style: TextStyle(
+                                              color: Colors.white,
+                                              fontSize: 20)),
+                                    ),
+                                  ],
+                                ),
+                              ],
+                            ),
+                            SizedBox(height: 10),
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                                Row(
+                                  children: [
+                                    Padding(
+                                      padding: const EdgeInsets.all(4.0),
+                                      child: Text("Total Counts",
+                                          style: TextStyle(
+                                              color: Colors.yellow,
+                                              fontSize: 20,
+                                              fontWeight: FontWeight.bold)),
+                                    ),
+                                    Padding(
+                                      padding: const EdgeInsets.all(4.0),
+                                      child: Text(
+                                          snapshot.data.snapshot
+                                                  .value["Totalcounts"]
+                                                  .toString() +
+                                              "",
+                                          style: TextStyle(
+                                              color: Colors.white,
+                                              fontSize: 20)),
+                                    ),
+                                  ],
+                                ),
+                              ],
+                            ),
+                            SizedBox(height: 200),
+                            Column(
+                              children: [
+                                
+                                Padding(
+                                  padding: const EdgeInsets.all(1),
+                                  child: Text(
+                                      DateFormat.yMEd()
+                                          .add_jms()
+                                          .format(DateTime.now()),
+                                      textAlign: TextAlign.center,
+                                      style: new TextStyle(
+                                          fontWeight: FontWeight.bold,
+                                          fontSize: 20,
+                                          color: Colors.white)),
+                                ),
+                              ],
+                            ),
+                          ]);
+                        } else {
+                          return Column(children: [
+                            SizedBox(height: 5),
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                                Row(
+                                  children: [
+                                    Padding(
+                                      padding: const EdgeInsets.all(4.0),
+                                      child: Text("Tram5",
+                                          style: TextStyle(
+                                              color: Colors.yellow,
+                                              fontSize: 20,
+                                              fontWeight: FontWeight.bold)),
+                                    ),
+                                    Padding(
+                                      padding: const EdgeInsets.all(4.0),
+                                      child: Text("DISCONNECTED",
+                                          style: TextStyle(
+                                              color: Colors.white,
+                                              fontSize: 20)),
+                                    ),
+                                  ],
+                                ),
+                              ],
+                            )
+                          ]);
+                        }
+                      });
+                })));
+  }
+}
+
+class FourPage extends StatelessWidget {
+  final dbRef = FirebaseDatabase.instance.reference();
+  @override
+  Widget build(BuildContext ctxt) {
+    return new Scaffold(
+        appBar: new AppBar(
+          title: new Text("Information - Station 4"),
+        ),
+        body: SafeArea(
+            child: StreamBuilder(
+                stream: Stream.periodic(const Duration(seconds: 1)),
+                builder: (context, snapshot) {
+                  return StreamBuilder(
+                      stream: dbRef.child("Tram4").onValue,
+                      builder: (context, snapshot) {
+                        if (snapshot.hasData &&
+                            !snapshot.hasError &&
+                            snapshot.data.snapshot.value != null &&
+                            snapshot.data.snapshot.value["RealTime"] !=
+                                realtime4) {
+                          _timer =
+                              new Timer(const Duration(milliseconds: 2000), () {
+                            realtime4 =
+                                snapshot.data.snapshot.value["RealTime"];
+                          });
+                          return Column(children: [
+                            
+                            SizedBox(height: 5),
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                                Row(
+                                  children: [
+                                    Padding(
+                                      padding: const EdgeInsets.all(4.0),
+                                      child: Text("Temperature",
+                                          style: TextStyle(
+                                              color: Colors.yellow,
+                                              fontSize: 20,
+                                              fontWeight: FontWeight.bold)),
+                                    ),
+                                    Padding(
+                                      padding: const EdgeInsets.all(4.0),
+                                      child: Text(
+                                          snapshot.data.snapshot
+                                                  .value["nhietdo"]
+                                                  .toString() +
+                                              "°C",
+                                          style: TextStyle(
+                                              color: Colors.white,
+                                              fontSize: 20)),
+                                    ),
+                                  ],
+                                ),
+                              ],
+                            ),
+                            SizedBox(height: 10),
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                                Row(
+                                  children: [
+                                    Padding(
+                                      padding: const EdgeInsets.all(4.0),
+                                      child: Text("Humidity",
+                                          style: TextStyle(
+                                              color: Colors.yellow,
+                                              fontSize: 20,
+                                              fontWeight: FontWeight.bold)),
+                                    ),
+                                    Padding(
+                                      padding: const EdgeInsets.all(4.0),
+                                      child: Text(
+                                          snapshot.data.snapshot.value["doam"]
+                                                  .toString() +
+                                              "%",
+                                          style: TextStyle(
+                                              color: Colors.white,
+                                              fontSize: 20)),
+                                    ),
+                                  ],
+                                ),
+                              ],
+                            ),
+                            SizedBox(height: 10),
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                                Row(
+                                  children: [
+                                    Padding(
+                                      padding: const EdgeInsets.all(4.0),
+                                      child: Text("cps",
+                                          style: TextStyle(
+                                              color: Colors.yellow,
+                                              fontSize: 20,
+                                              fontWeight: FontWeight.bold)),
+                                    ),
+                                    Padding(
+                                      padding: const EdgeInsets.all(4.0),
+                                      child: Text(
+                                          snapshot.data.snapshot.value["cps"]
+                                                  .toString() +
+                                              "",
+                                          style: TextStyle(
+                                              color: Colors.white,
+                                              fontSize: 20)),
+                                    ),
+                                  ],
+                                ),
+                              ],
+                            ),
+                            SizedBox(height: 10),
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                                Row(
+                                  children: [
+                                    Padding(
+                                      padding: const EdgeInsets.all(4.0),
+                                      child: Text("uSv",
+                                          style: TextStyle(
+                                              color: Colors.yellow,
+                                              fontSize: 20,
+                                              fontWeight: FontWeight.bold)),
+                                    ),
+                                    Padding(
+                                      padding: const EdgeInsets.all(4.0),
+                                      child: Text(
+                                          snapshot.data.snapshot.value["uSv"]
+                                                  .toString() +
+                                              "uSv/h",
+                                          style: TextStyle(
+                                              color: Colors.white,
+                                              fontSize: 20)),
+                                    ),
+                                  ],
+                                ),
+                              ],
+                            ),
+                            SizedBox(height: 10),
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                                Row(
+                                  children: [
+                                    Padding(
+                                      padding: const EdgeInsets.all(4.0),
+                                      child: Text("Total Counts",
+                                          style: TextStyle(
+                                              color: Colors.yellow,
+                                              fontSize: 20,
+                                              fontWeight: FontWeight.bold)),
+                                    ),
+                                    Padding(
+                                      padding: const EdgeInsets.all(4.0),
+                                      child: Text(
+                                          snapshot.data.snapshot
+                                                  .value["Totalcounts"]
+                                                  .toString() +
+                                              "",
+                                          style: TextStyle(
+                                              color: Colors.white,
+                                              fontSize: 20)),
+                                    ),
+                                  ],
+                                ),
+                              ],
+                            ),
+                            SizedBox(height: 200),
+                            Column(
+                              children: [
+                                
+                                Padding(
+                                  padding: const EdgeInsets.all(1),
+                                  child: Text(
+                                      DateFormat.yMEd()
+                                          .add_jms()
+                                          .format(DateTime.now()),
+                                      textAlign: TextAlign.center,
+                                      style: new TextStyle(
+                                          fontWeight: FontWeight.bold,
+                                          fontSize: 20,
+                                          color: Colors.white)),
+                                ),
+                              ],
+                            ),
+                          ]);
+                        } else {
+                          return Column(children: [
+                            SizedBox(height: 5),
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                                Row(
+                                  children: [
+                                    Padding(
+                                      padding: const EdgeInsets.all(4.0),
+                                      child: Text("Tram4",
+                                          style: TextStyle(
+                                              color: Colors.yellow,
+                                              fontSize: 20,
+                                              fontWeight: FontWeight.bold)),
+                                    ),
+                                    Padding(
+                                      padding: const EdgeInsets.all(4.0),
+                                      child: Text("DISCONNECTED",
+                                          style: TextStyle(
+                                              color: Colors.white,
+                                              fontSize: 20)),
+                                    ),
+                                  ],
+                                ),
+                              ],
+                            )
+                          ]);
+                        }
+                      });
+                })));
+  }
+}
 
 class ThirdPage extends StatelessWidget {
   final dbRef = FirebaseDatabase.instance.reference();
@@ -25,7 +692,7 @@ class ThirdPage extends StatelessWidget {
         ),
         body: SafeArea(
             child: StreamBuilder(
-                stream: Stream.periodic(const Duration(seconds: 3)),
+                stream: Stream.periodic(const Duration(seconds: 1)),
                 builder: (context, snapshot) {
                   return StreamBuilder(
                       stream: dbRef.child("Tram3").onValue,
@@ -36,7 +703,7 @@ class ThirdPage extends StatelessWidget {
                             snapshot.data.snapshot.value["RealTime"] !=
                                 realtime1) {
                           _timer =
-                              new Timer(const Duration(milliseconds: 3000), () {
+                              new Timer(const Duration(milliseconds: 2000), () {
                             realtime1 =
                                 snapshot.data.snapshot.value["RealTime"];
                           });
@@ -183,32 +850,21 @@ class ThirdPage extends StatelessWidget {
                                 ),
                               ],
                             ),
-                            SizedBox(height: 10),
-                            Row(
-                              mainAxisAlignment: MainAxisAlignment.center,
+                           SizedBox(height: 200),
+                            Column(
                               children: [
-                                Row(
-                                  children: [
-                                    Padding(
-                                      padding: const EdgeInsets.all(4.0),
-                                      child: Text("Time Station",
-                                          style: TextStyle(
-                                              color: Colors.yellow,
-                                              fontSize: 20,
-                                              fontWeight: FontWeight.bold)),
-                                    ),
-                                    Padding(
-                                      padding: const EdgeInsets.all(4.0),
-                                      child: Text(
-                                          snapshot.data.snapshot
-                                                  .value["RealTime"]
-                                                  .toString() +
-                                              "",
-                                          style: TextStyle(
-                                              color: Colors.white,
-                                              fontSize: 20)),
-                                    ),
-                                  ],
+                                
+                                Padding(
+                                  padding: const EdgeInsets.all(1),
+                                  child: Text(
+                                      DateFormat.yMEd()
+                                          .add_jms()
+                                          .format(DateTime.now()),
+                                      textAlign: TextAlign.center,
+                                      style: new TextStyle(
+                                          fontWeight: FontWeight.bold,
+                                          fontSize: 20,
+                                          color: Colors.white)),
                                 ),
                               ],
                             ),
@@ -257,7 +913,7 @@ class FirstPage extends StatelessWidget {
         ),
         body: SafeArea(
             child: StreamBuilder(
-                stream: Stream.periodic(const Duration(seconds: 3)),
+                stream: Stream.periodic(const Duration(seconds: 1)),
                 builder: (context, snapshot) {
                   return StreamBuilder(
                       stream: dbRef.child("Tram1").onValue,
@@ -268,7 +924,7 @@ class FirstPage extends StatelessWidget {
                             snapshot.data.snapshot.value["RealTime"] !=
                                 realtime2) {
                           _timer =
-                              new Timer(const Duration(milliseconds: 3000), () {
+                              new Timer(const Duration(milliseconds: 2000), () {
                             realtime2 =
                                 snapshot.data.snapshot.value["RealTime"];
                           });
@@ -415,32 +1071,21 @@ class FirstPage extends StatelessWidget {
                                 ),
                               ],
                             ),
-                            SizedBox(height: 10),
-                            Row(
-                              mainAxisAlignment: MainAxisAlignment.center,
+                            SizedBox(height: 200),
+                            Column(
                               children: [
-                                Row(
-                                  children: [
-                                    Padding(
-                                      padding: const EdgeInsets.all(4.0),
-                                      child: Text("Time Station",
-                                          style: TextStyle(
-                                              color: Colors.yellow,
-                                              fontSize: 20,
-                                              fontWeight: FontWeight.bold)),
-                                    ),
-                                    Padding(
-                                      padding: const EdgeInsets.all(4.0),
-                                      child: Text(
-                                          snapshot.data.snapshot
-                                                  .value["RealTime"]
-                                                  .toString() +
-                                              "",
-                                          style: TextStyle(
-                                              color: Colors.white,
-                                              fontSize: 20)),
-                                    ),
-                                  ],
+                                
+                                Padding(
+                                  padding: const EdgeInsets.all(1),
+                                  child: Text(
+                                      DateFormat.yMEd()
+                                          .add_jms()
+                                          .format(DateTime.now()),
+                                      textAlign: TextAlign.center,
+                                      style: new TextStyle(
+                                          fontWeight: FontWeight.bold,
+                                          fontSize: 20,
+                                          color: Colors.white)),
                                 ),
                               ],
                             ),
@@ -487,7 +1132,7 @@ class SecondPage extends StatelessWidget {
         ),
         body: SafeArea(
             child: StreamBuilder(
-                stream: Stream.periodic(const Duration(seconds: 3)),
+                stream: Stream.periodic(const Duration(seconds: 1)),
                 builder: (context, snapshot) {
                   return StreamBuilder(
                     stream: dbRef.child("Tram2").onValue,
@@ -498,7 +1143,7 @@ class SecondPage extends StatelessWidget {
                           snapshot.data.snapshot.value["RealTime"] !=
                               realtime3) {
                         _timer =
-                            new Timer(const Duration(milliseconds: 3000), () {
+                            new Timer(const Duration(milliseconds: 2000), () {
                           realtime3 = snapshot.data.snapshot.value["RealTime"];
                         });
                         return Column(children: [
@@ -638,33 +1283,24 @@ class SecondPage extends StatelessWidget {
                               ),
                             ],
                           ),
-                          SizedBox(height: 10),
-                          Row(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: [
-                              Row(
-                                children: [
-                                  Padding(
-                                    padding: const EdgeInsets.all(4.0),
-                                    child: Text("Time Station",
-                                        style: TextStyle(
-                                            color: Colors.yellow,
-                                            fontSize: 20,
-                                            fontWeight: FontWeight.bold)),
-                                  ),
-                                  Padding(
-                                    padding: const EdgeInsets.all(4.0),
-                                    child: Text(
-                                        snapshot.data.snapshot.value["RealTime"]
-                                                .toString() +
-                                            "",
-                                        style: TextStyle(
-                                            color: Colors.white, fontSize: 20)),
-                                  ),
-                                ],
-                              ),
-                            ],
-                          ),
+                          SizedBox(height: 200),
+                            Column(
+                              children: [
+                                
+                                Padding(
+                                  padding: const EdgeInsets.all(1),
+                                  child: Text(
+                                      DateFormat.yMEd()
+                                          .add_jms()
+                                          .format(DateTime.now()),
+                                      textAlign: TextAlign.center,
+                                      style: new TextStyle(
+                                          fontWeight: FontWeight.bold,
+                                          fontSize: 20,
+                                          color: Colors.white)),
+                                ),
+                              ],
+                            ),
                         ]);
                       }
                       return (Column(children: [
@@ -771,6 +1407,31 @@ class _IotScreenState extends State<IotScreen>
                           builder: (ctxt) => new ThirdPage()));
                 },
               ),
+              new ListTile(
+                title: new Text("Station 4"),
+                onTap: () {
+                  Navigator.push(context,
+                      new MaterialPageRoute(builder: (ctxt) => new FourPage()));
+                },
+              ),
+              new ListTile(
+                title: new Text("Station 5"),
+                onTap: () {
+                  Navigator.push(
+                      context,
+                      new MaterialPageRoute(
+                          builder: (ctxt) => new ThursPage()));
+                },
+              ),
+              new ListTile(
+                title: new Text("Station 6"),
+                onTap: () {
+                  Navigator.push(
+                      context,
+                      new MaterialPageRoute(
+                          builder: (ctxt) => new SixthPage()));
+                },
+              ),
             ],
           )),
           body: SafeArea(
@@ -814,7 +1475,7 @@ class _IotScreenState extends State<IotScreen>
                       children: [
                         Padding(
                           padding: const EdgeInsets.all(18.0),
-                          child: Text("Date - Time",
+                          child: Text("Trạm Đo Theo Thời Gian Thực",
                               style: TextStyle(
                                   color: value ? Colors.white : Colors.yellow,
                                   fontSize: 20,
@@ -828,11 +1489,11 @@ class _IotScreenState extends State<IotScreen>
                                   .format(DateTime.now()),
                               textAlign: TextAlign.center,
                               style: new TextStyle(
-                                  fontWeight: FontWeight.bold, fontSize: 20)),
+                                  fontWeight: FontWeight.bold, fontSize: 15)),
                         ),
                       ],
                     ),
-                    SizedBox(height: 100),
+                    SizedBox(height: 200),
                     Padding(
                       padding: const EdgeInsets.all(18.0),
                       child: FloatingActionButton.extended(
@@ -840,7 +1501,7 @@ class _IotScreenState extends State<IotScreen>
                             ? Icon(Icons.visibility)
                             : Icon(Icons.visibility_off),
                         backgroundColor: value ? Colors.yellow : Colors.white,
-                        label: value ? Text("ON") : Text("OFF"),
+                        label: value ? Text("Bật Cảnh Báo") : Text("Tắt Cảnh Báo"),
                         elevation: 20.00,
                         onPressed: () {
                           onUpdate();
@@ -848,8 +1509,21 @@ class _IotScreenState extends State<IotScreen>
                         },
                       ),
                     ),
+                    SizedBox(height: 5),
+                    Column(
+                      children: [
+                        Padding(
+                          padding: const EdgeInsets.all(18.0),
+                          child: Text("",
+                              style: TextStyle(
+                                  color: value ? Colors.white : Colors.yellow,
+                                  fontSize: 20,
+                                  fontWeight: FontWeight.bold)),
+                        ),
                   ],
-                );
+                    ),
+                  ]);
+                
               },
             ),
           ),
