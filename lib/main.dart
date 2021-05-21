@@ -1,10 +1,14 @@
 import 'dart:async';
 
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_app/screens/iotscreen.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 
-void main() => runApp(MyApp());
+void main() {
+  debugDefaultTargetPlatformOverride = TargetPlatform.fuchsia;
+  runApp(MyApp());
+}
 
 class MyApp extends StatelessWidget {
   @override
@@ -12,7 +16,7 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       routes: <String, WidgetBuilder>{},
       title: 'REWES',
-      theme: ThemeData(brightness: Brightness.dark),
+      theme: ThemeData(brightness: Brightness.light),
       debugShowCheckedModeBanner: false,
       home: MyHomePage(),
     );
@@ -25,11 +29,13 @@ class MyHomePage extends StatefulWidget {
 }
 
 class _MyHomePageState extends State<MyHomePage> {
-
   @override
   void initState() {
     super.initState();
-    Timer(Duration(seconds: 3), () => Navigator.push (context, MaterialPageRoute(builder: (context) => IotScreen())));
+    Timer(
+        Duration(seconds: 3),
+        () => Navigator.push(
+            context, MaterialPageRoute(builder: (context) => IotScreen())));
   }
 
   @override
